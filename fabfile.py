@@ -8,8 +8,7 @@ import logging
 import nose
 from fabric.api import *
 import requests
-import dicttoxml
-from xml.dom import minidom
+
 
 UPDATES_URL = "https://updates.jenkins-ci.org/update-center.json?id=default"
 HUSCHTEGUZZEL_URL = "https://huschteguzzel.de/hudson/"
@@ -59,16 +58,13 @@ def jenkins_update_center():
 
 
 def convert_updated_plugins_to_xml(plugins):
-    forxml = []
+    plugins_xml = [u"<root>"]
     for plugin in plugins:
-        forxml.append({"shortName": plugin["name"], "version": plugin["version"], "hasUpdate": True})
-    xml = dicttoxml.dicttoxml(forxml, custom_root="pluginManager", attr_type=False)
-    dom = minidom.parseString(xml)
-    items = dom.getElementsByTagName("item")
-    for item in items:
-        dom.renameNode(item, "", "plugin")
-    plugins_xml = dom.toxml("utf-8")
-    return plugins_xml
+        name = plugin["name"]
+        version = plugin["version"]
+        plugins_xml.append(u"""<{} plugin="{}@{}"/>""".format(name, version, name))
+    plugins_xml.append(u"</root>")
+    return u"".join(plugins_xml)
 
 
 @task
@@ -81,7 +77,7 @@ def jenkins_update_plugins():
 
     auth = (env.jenkins_user, env.jenkins_token)
     #execute(jenkins_update_center)
-    reply = requests.get(HUSCHTEGUZZEL_URL + "updateCenter/site/default/api/json?&depth=2&tree=updates[name,version]", auth=auth)
+    reply = requests.get(HUSCHTEGUZZEL_URL + "updateCenter/site/default/api/json?depth=2&tree=updates[name,version]", auth=auth)
     if not reply.ok:
         abort("Could not get api")
     plugins_json = reply.content
@@ -93,7 +89,6 @@ def jenkins_update_plugins():
     if not reply.ok:
         abort("Could not prevalidateConfig {}".format(reply.content))
     logging.info("Outdated plugins: {}".format(json.loads(reply.content)))
-
     reply = requests.post(HUSCHTEGUZZEL_URL + "pluginManager/installNecessaryPlugins", data=plugins_xml, auth=auth)
     if not reply.ok:
         abort("Could not install plugins {}".format(reply.content))
