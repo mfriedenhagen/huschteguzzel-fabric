@@ -62,7 +62,9 @@ def convert_updated_plugins_to_xml(plugins):
     for plugin in plugins:
         name = plugin["name"]
         version = plugin["version"]
-        plugins_xml.append(u"""<{} plugin="{}@{}"/>""".format(name, version, name))
+        installed = plugin["installed"]["version"]
+        plugins_xml.append(u"""<{name} plugin="{name}@{version}"><installed plugin="{name}@{installed}"/></{name}>""".format
+                           (name=name, version=version, installed=installed))
     plugins_xml.append(u"</root>")
     return u"".join(plugins_xml)
 
@@ -77,7 +79,9 @@ def jenkins_update_plugins():
 
     auth = (env.jenkins_user, env.jenkins_token)
     #execute(jenkins_update_center)
-    reply = requests.get(HUSCHTEGUZZEL_URL + "updateCenter/site/default/api/json?depth=2&tree=updates[name,version]", auth=auth)
+    reply = requests.get(
+        HUSCHTEGUZZEL_URL +
+        "updateCenter/site/default/api/json?pretty=true&depth=2&tree=updates[name,version,installed[shortName,version]]", auth=auth)
     if not reply.ok:
         abort("Could not get api")
     plugins_json = reply.content
@@ -89,6 +93,7 @@ def jenkins_update_plugins():
     if not reply.ok:
         abort("Could not prevalidateConfig {}".format(reply.content))
     logging.info("Outdated plugins: {}".format(json.loads(reply.content)))
+    return
     reply = requests.post(HUSCHTEGUZZEL_URL + "pluginManager/installNecessaryPlugins", data=plugins_xml, auth=auth)
     if not reply.ok:
         abort("Could not install plugins {}".format(reply.content))
