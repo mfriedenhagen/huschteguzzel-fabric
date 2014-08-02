@@ -9,6 +9,7 @@ import nose
 from fabric.api import *
 import requests
 
+import time
 
 UPDATES_URL = "https://updates.jenkins-ci.org/update-center.json?id=default"
 HUSCHTEGUZZEL_URL = "https://huschteguzzel.de/hudson/"
@@ -19,6 +20,7 @@ env.user = env.huschteguzzel_shell_user
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("dicttoxml").setLevel(logging.WARNING)
+logging.getLogger("requests").setLevel(logging.WARNING)
 
 @task
 def apt_get_update():
@@ -77,9 +79,9 @@ class JenkinsUpdatePlugins(object):
     def get_updated_plugins_metadata(self):
         logging.info("get_updated_plugins_metadata")
         reply = self._get(
-            "updateCenter/site/default/api/json?pretty=true&depth=2&tree=updates[name,version,installed[shortName,version]]")
+            "updateCenter/site/default/api/json?depth=2&tree=updates[name,version,installed[shortName,version]]")
         if not reply.ok:
-            abort("Could not get updates from updateCenter")
+            abort("Could not get updates from updateCenter: {}".format(reply.status_code))
         plugins_json = reply.content
         plugins = json.loads(plugins_json)["updates"]
         logging.debug("outdated_plugins: {}".format(plugins))
@@ -98,21 +100,32 @@ class JenkinsUpdatePlugins(object):
         logging.info("pluginManager/installNecessaryPlugins: {}".format(reply.status_code))
 
     def wait_for_installation_of_plugins(self):
-        reply = self._get("updateCenter/api/json?depth=1")
-        if not reply.ok:
-            abort("")
-        installation_jobs = [job for job in json.loads(reply.content)["jobs"] if job["type"] == "InstallationJob"]
-        print installation_jobs
+        """
+        Waits 60 seconds for all plugin downloads to succeed.
+        """
+        i = 0
+        outstanding_jobs = [True, ] # initial non-empty value, so we enter the loop at least once
+        while i < 12 and outstanding_jobs:
+            reply = self._get("updateCenter/api/json?depth=1")
+            if not reply.ok:
+                abort("Could not get info from updateCenter: {}".format(reply.content))
+            outstanding_jobs = [
+                job for job in json.loads(reply.content)["jobs"]
+                if job["type"] == "InstallationJob" and not job["status"]["success"]
+            ]
+            logging.info("outstanding download jobs for plugins: {}".format(outstanding_jobs))
+            i += 1
+            time.sleep(5)
 
     def _post(self, path, data):
-        return requests.post(
-            self.root_url +
-            path, data=data, auth=self.auth)
+        url = self.root_url + path
+        logging.info("_post: {}".format(url))
+        return requests.post(url, data=data, auth=self.auth)
 
     def _get(self, path):
-        return requests.get(
-            self.root_url +
-            path, auth=self.auth)
+        url = self.root_url + path
+        logging.info("_get: {}".format(url))
+        return requests.get(url, auth=self.auth)
 
 @task
 def jenkins_update_plugins():
@@ -121,9 +134,6 @@ def jenkins_update_plugins():
     """
     require("jenkins_user")
     require("jenkins_token")
-
-
-
     #execute(jenkins_update_center)
     j = JenkinsUpdatePlugins(HUSCHTEGUZZEL_URL, env.jenkins_user, env.jenkins_token)
     plugins = j.get_updated_plugins_metadata()
@@ -132,7 +142,6 @@ def jenkins_update_plugins():
     j.prevalidate_configuration(plugins_xml)
     j.install_necessary_plugins(plugins_xml)
     j.wait_for_installation_of_plugins()
-
     print("Ready for restart")
 
 
