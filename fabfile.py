@@ -18,22 +18,31 @@ require("huschteguzzel_shell_user")
 env.hosts = ["huschteguzzel.de"]
 env.user = env.huschteguzzel_shell_user
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s:%(levelname)s:%(name)s:%(message)s")
 logging.getLogger("dicttoxml").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)
 
 @task
 def apt_get_update():
+    """
+    apt-get update
+    """
     sudo("apt-get update")
 
 
 @task
 def apt_get_upgrade():
+    """
+    apt-get -q -y upgrade
+    """
     sudo("apt-get -q -y upgrade")
 
 
 @task
 def upgrade():
+    """
+    apt-get update && apt-get -q -y upgrade
+    """
     execute(apt_get_update)
     execute(apt_get_upgrade)
 
@@ -43,17 +52,26 @@ def jenkins_restart():
     """
     Restarts Jenkins
     """
+    require("jenkins_user")
+    require("jenkins_token")
     sudo("/etc/init.d/jenkins restart")
+    auth = (env.jenkins_user, env.jenkins_token)
 
 @task
 def jenkins_update_center():
+    """
+    Updates plugin information from UPDATES_URL.
+    """
     require("jenkins_user")
     require("jenkins_token")
     auth = (env.jenkins_user, env.jenkins_token)
+    logging.info("jenkins_update_center: UPDATES_URL={}".format(UPDATES_URL))
     raw = requests.get(UPDATES_URL).content
     json_text = raw.split('\n')[1]
     json.loads(json_text)
-    reply = requests.post(HUSCHTEGUZZEL_URL + 'updateCenter/byId/default/postBack', data=json_text, auth=auth)
+    post_back_url = HUSCHTEGUZZEL_URL + 'updateCenter/byId/default/postBack'
+    logging.info("jenkins_update_center: post_back_url={}".format(post_back_url))
+    reply = requests.post(post_back_url, data=json_text, auth=auth)
     if not reply.ok:
         abort("updates upload not ok {}".format(reply.text))
     logging.info('applied updates json')
@@ -63,9 +81,10 @@ class JenkinsUpdatePlugins(object):
     def __init__(self, root_url, user, password):
         self.root_url = root_url
         self.auth = (user, password)
+        self.plugins_xml = None
 
     @staticmethod
-    def convert_updated_plugins_to_xml(plugins):
+    def _convert_updated_plugins_to_xml(plugins):
         plugins_xml = [u"<root>"]
         for plugin in plugins:
             name = plugin["name"]
@@ -85,16 +104,16 @@ class JenkinsUpdatePlugins(object):
         plugins_json = reply.content
         plugins = json.loads(plugins_json)["updates"]
         logging.debug("outdated_plugins: {}".format(plugins))
-        return plugins
+        self.plugins_xml = self._convert_updated_plugins_to_xml(plugins)
 
-    def prevalidate_configuration(self, plugins_xml):
-        reply = self._post("pluginManager/prevalidateConfig", plugins_xml)
+    def prevalidate_configuration(self):
+        reply = self._post("pluginManager/prevalidateConfig", self.plugins_xml)
         if not reply.ok:
             abort("Could not prevalidateConfig {}".format(reply.content))
         logging.info("Outdated plugins: {}".format(json.loads(reply.content)))
 
-    def install_necessary_plugins(self, plugins_xml):
-        reply = self._post("pluginManager/installNecessaryPlugins", plugins_xml)
+    def install_necessary_plugins(self):
+        reply = self._post("pluginManager/installNecessaryPlugins", self.plugins_xml)
         if not reply.ok:
             abort("Could not install plugins {}".format(reply.content))
         logging.info("pluginManager/installNecessaryPlugins: {}".format(reply.status_code))
@@ -136,14 +155,15 @@ def jenkins_update_plugins():
     require("jenkins_token")
     #execute(jenkins_update_center)
     j = JenkinsUpdatePlugins(HUSCHTEGUZZEL_URL, env.jenkins_user, env.jenkins_token)
-    plugins = j.get_updated_plugins_metadata()
-    plugins_xml = j.convert_updated_plugins_to_xml(plugins)
-    logging.info("plugins_xml: {}".format(plugins_xml))
-    j.prevalidate_configuration(plugins_xml)
-    j.install_necessary_plugins(plugins_xml)
-    j.wait_for_installation_of_plugins()
-    print("Ready for restart")
-
+    j.get_updated_plugins_metadata()
+    logging.info("plugins_xml: {}".format(j.plugins_xml))
+    if j.plugins_xml != "<root></root>":
+        j.prevalidate_configuration()
+        j.install_necessary_plugins()
+        j.wait_for_installation_of_plugins()
+        logging.info("Ready for restart")
+    else:
+        logging.info("No updated plugins found")
 
 @task
 def test(args=None):
