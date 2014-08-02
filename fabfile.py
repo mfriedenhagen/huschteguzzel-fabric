@@ -15,6 +15,7 @@ env.user = env.jenkins_shell_user
 logging.basicConfig(level=logging.INFO, format="%(asctime)s:%(levelname)s:%(name)s:%(message)s")
 logging.getLogger("dicttoxml").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("paramiko").setLevel(logging.WARNING)
 
 @task
 def apt_get_update():
