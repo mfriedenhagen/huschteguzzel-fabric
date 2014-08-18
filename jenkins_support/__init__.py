@@ -117,6 +117,17 @@ def restart():
 
 
 @task
+def show_outdated_plugins():
+    """
+    Shows all outdated plugins.
+    """
+    require("jenkins_user")
+    require("jenkins_token")
+    j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
+    j.get_updated_plugins_metadata()
+    logging.info("plugins_xml: {}".format(j.plugins_xml))
+
+@task
 def update_plugins():
     """
     Updates jenkins plugins.
