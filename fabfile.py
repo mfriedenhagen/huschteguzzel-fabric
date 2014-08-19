@@ -20,9 +20,9 @@ logging.getLogger("paramiko").setLevel(logging.WARNING)
 @task
 def apt_get_update():
     """
-    apt-get update
+    apt-get -q update
     """
-    sudo("apt-get update")
+    sudo("apt-get -q update")
 
 
 @task
@@ -36,7 +36,7 @@ def apt_get_upgrade():
 @task
 def upgrade():
     """
-    apt-get update && apt-get -q -y upgrade
+    apt-get -q update && apt-get -q -y upgrade
     """
     execute(apt_get_update)
     execute(apt_get_upgrade)
