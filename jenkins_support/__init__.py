@@ -13,6 +13,8 @@ __author__ = 'mirko'
 UPDATES_URL = env.get("jenkins_updates_url", "https://updates.jenkins-ci.org/update-center.json?id=default")
 JENKINS_URL = env.get("jenkins_url", "https://huschteguzzel.de/hudson/")
 
+LOG = logging.getLogger("jenkins_support")
+
 
 class JenkinsUpdatePlugins(object):
     def __init__(self, root_url, user, password):
@@ -34,27 +36,27 @@ class JenkinsUpdatePlugins(object):
         return u"".join(plugins_xml)
 
     def get_updated_plugins_metadata(self):
-        logging.info("get_updated_plugins_metadata")
+        LOG.info("get_updated_plugins_metadata")
         reply = self._get(
             "updateCenter/site/default/api/json?depth=2&tree=updates[name,version,installed[shortName,version]]")
         if not reply.ok:
             abort("Could not get updates from updateCenter: {}".format(reply.status_code))
         plugins_json = reply.content
         plugins = json.loads(plugins_json)["updates"]
-        logging.debug("outdated_plugins: {}".format(plugins))
+        LOG.debug("outdated_plugins: {}".format(plugins))
         self.plugins_xml = self._convert_updated_plugins_to_xml(plugins)
 
     def prevalidate_configuration(self):
         reply = self._post("pluginManager/prevalidateConfig", self.plugins_xml)
         if not reply.ok:
             abort("Could not prevalidateConfig {}".format(reply.content))
-        logging.info("Outdated plugins: {}".format(json.loads(reply.content)))
+        LOG.info("Outdated plugins: {}".format(json.loads(reply.content)))
 
     def install_necessary_plugins(self):
         reply = self._post("pluginManager/installNecessaryPlugins", self.plugins_xml)
         if not reply.ok:
             abort("Could not install plugins {}".format(reply.content))
-        logging.info("pluginManager/installNecessaryPlugins: {}".format(reply.status_code))
+        LOG.info("pluginManager/installNecessaryPlugins: {}".format(reply.status_code))
 
     def wait_for_installation_of_plugins(self):
         """
@@ -70,18 +72,18 @@ class JenkinsUpdatePlugins(object):
                 job for job in json.loads(reply.content)["jobs"]
                 if job["type"] == "InstallationJob" and not job["status"]["success"]
             ]
-            logging.info("outstanding download jobs for plugins: {}".format(outstanding_jobs))
+            LOG.info("outstanding download jobs for plugins: {}".format(outstanding_jobs))
             i += 1
             time.sleep(5)
 
     def _post(self, path, data):
         url = self.root_url + path
-        logging.info("_post: {}".format(url))
+        LOG.info("_post: {}".format(url))
         return requests.post(url, data=data, auth=self.auth)
 
     def _get(self, path):
         url = self.root_url + path
-        logging.info("_get: {}".format(url))
+        LOG.info("_get: {}".format(url))
         return requests.get(url, auth=self.auth)
 
 
@@ -93,16 +95,16 @@ def update_center():
     require("jenkins_user")
     require("jenkins_token")
     auth = (env.jenkins_user, env.jenkins_token)
-    logging.info("jenkins_update_center: UPDATES_URL={}".format(UPDATES_URL))
+    LOG.info("jenkins_update_center: UPDATES_URL={}".format(UPDATES_URL))
     raw = requests.get(UPDATES_URL).content
     json_text = raw.split('\n')[1]
     json.loads(json_text)
     post_back_url = JENKINS_URL + 'updateCenter/byId/default/postBack'
-    logging.info("jenkins_update_center: post_back_url={}".format(post_back_url))
+    LOG.info("jenkins_update_center: post_back_url={}".format(post_back_url))
     reply = requests.post(post_back_url, data=json_text, auth=auth)
     if not reply.ok:
         abort("updates upload not ok {}".format(reply.text))
-    logging.info('applied updates json')
+    LOG.info('applied updates json')
 
 
 @task
@@ -125,7 +127,7 @@ def show_outdated_plugins():
     require("jenkins_token")
     j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
     j.get_updated_plugins_metadata()
-    logging.info("plugins_xml: {}".format(j.plugins_xml))
+    LOG.info("plugins_xml: {}".format(j.plugins_xml))
 
 @task
 def update_plugins():
@@ -136,11 +138,11 @@ def update_plugins():
     require("jenkins_token")
     j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
     j.get_updated_plugins_metadata()
-    logging.info("plugins_xml: {}".format(j.plugins_xml))
+    LOG.info("plugins_xml: {}".format(j.plugins_xml))
     if j.plugins_xml != "<root></root>":
         j.prevalidate_configuration()
         j.install_necessary_plugins()
         j.wait_for_installation_of_plugins()
-        logging.info("Ready for restart")
+        LOG.info("Ready for restart")
     else:
-        logging.info("No updated plugins found")
+        LOG.info("No updated plugins found")
