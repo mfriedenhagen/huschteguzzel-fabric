@@ -1,0 +1,6 @@
+Welcome to ${node.hostname}
+Running Ubuntu 12.04.5 LTS (GNU/Linux 2.6.32-46-server x86_64)
+
+ * Documentation:  https://help.ubuntu.com/12.04/serverguide/C
+ New release '14.04.1 LTS' available.
+ Run 'do-release-upgrade' to upgrade to it.
