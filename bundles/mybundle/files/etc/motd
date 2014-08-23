@@ -1,4 +1,1 @@
-Welcome to ${node.hostname} running Ubuntu 14.04.1 LTS (GNU/Linux 2.6.32-46-server x86_64)
-
- * Documentation:  https://help.ubuntu.com/14.04/serverguide/C
-
+ * ${node.hostname}, managed by bundlewrap.
