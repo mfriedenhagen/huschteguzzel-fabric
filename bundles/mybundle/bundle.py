@@ -11,7 +11,7 @@ files = {
         'mode': '0644',
         'source': "etc/default/jenkins",
         'triggers': [
-            "action:restart_jenkins",
+            "svc_systemv:jenkins:restart",
         ]
     },
     '/etc/nginx/sites-available/default': {
@@ -20,9 +20,14 @@ files = {
         'mode': '0644',
         'source': 'etc/nginx/sites-available/default',
         'triggers': [
-            "action:reload_nginx"
+            "svc_systemv:nginx:reload"
         ]
     },
+}
+
+svc_systemv = {
+    'nginx': {'running': True},
+    'jenkins': {'running': True},
 }
 
 symlinks = {
@@ -37,12 +42,8 @@ symlinks = {
 }
 
 actions = {
-    "restart_jenkins": {
-        "command": "service jenkins restart",
-        "triggered": True,
+    'apt_update': {
+        'cascade_skip': False,
+        'command': "apt-get update",
     },
-    "reload_nginx": {
-        "command": "service nginx reload",
-        "triggered": True
-    }
 }
