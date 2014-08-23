@@ -26,7 +26,7 @@ files = {
     '/etc/nginx/%s.crt' % node.hostname: {
         'owner': 'root',
         'group': 'root',
-        'mode': '0644',
+        'mode': '0444',
         'source': 'etc/nginx/%s.crt' % node.hostname,
         'content_type': 'text',
         'triggers': [
@@ -36,7 +36,7 @@ files = {
     '/etc/nginx/%s.key' % node.hostname: {
         'owner': 'root',
         'group': 'root',
-        'mode': '0600', # key *must not* be readable!
+        'mode': '0400', # key *must not* be readable!
         'content_type': 'text',
         'source': 'etc/nginx/%s.key' % node.hostname,
         'triggers': [
