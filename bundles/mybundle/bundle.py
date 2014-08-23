@@ -23,6 +23,26 @@ files = {
             "svc_systemv:nginx:reload"
         ]
     },
+    '/etc/nginx/public.crt': {
+        'owner': 'root',
+        'group': 'root',
+        'mode': '0644',
+        'source': 'etc/nginx/%s.crt' % node.hostname,
+        'content_type': 'text',
+        'triggers': [
+            "svc_systemv:nginx:reload"
+        ]
+    },
+    '/etc/nginx/private.key': {
+        'owner': 'root',
+        'group': 'root',
+        'mode': '0600',
+        'content_type': 'text',
+        'source': 'etc/nginx/%s.key' % node.hostname,
+        'triggers': [
+            "svc_systemv:nginx:reload"
+        ]
+    },
 }
 
 svc_systemv = {

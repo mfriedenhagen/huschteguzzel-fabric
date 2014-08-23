@@ -1,0 +1,1 @@
+Place ${node.hostname}.crt and ${node.hostname}.key into this directory.
