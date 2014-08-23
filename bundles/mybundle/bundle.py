@@ -23,7 +23,7 @@ files = {
             "svc_systemv:nginx:reload"
         ]
     },
-    '/etc/nginx/public.crt': {
+    '/etc/nginx/%s.crt' % node.hostname: {
         'owner': 'root',
         'group': 'root',
         'mode': '0644',
@@ -33,10 +33,10 @@ files = {
             "svc_systemv:nginx:reload"
         ]
     },
-    '/etc/nginx/private.key': {
+    '/etc/nginx/%s.key' % node.hostname: {
         'owner': 'root',
         'group': 'root',
-        'mode': '0600',
+        'mode': '0600', # key *must not* be readable!
         'content_type': 'text',
         'source': 'etc/nginx/%s.key' % node.hostname,
         'triggers': [

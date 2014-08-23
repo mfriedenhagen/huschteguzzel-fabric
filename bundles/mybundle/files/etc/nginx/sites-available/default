@@ -82,8 +82,8 @@ server {
 	server_name  ${node.hostname};
 
 	ssl  on;
-	ssl_certificate      public.crt;
-	ssl_certificate_key  private.key;
+	ssl_certificate      ${node.hostname}.crt;
+	ssl_certificate_key  ${node.hostname}.key;
 
 	ssl_session_timeout  5m;
 
