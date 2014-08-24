@@ -1,4 +1,4 @@
-# managed by bundlewrap
+# managed by bundlewrap https://github.com/mfriedenhagen/huschteguzzel-fabric
 # defaults for jenkins continuous integration server
 
 # pulled in from the init script; makes things easier.

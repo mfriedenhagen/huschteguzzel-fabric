@@ -1,4 +1,4 @@
-# Managed by bundlewrap
+# Managed by bundlewrap https://github.com/mfriedenhagen/huschteguzzel-fabric
 
 server {
 	listen   ${node.hostname}:80 default;
