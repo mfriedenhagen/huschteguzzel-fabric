@@ -1,6 +1,6 @@
 nodes = {
     'huschteguzzel': {
-        "bundles": ("nginx","jenkins", "squid3", "motd"),
+        "bundles": ("nginx","jenkins", "squid3", "motd", "apt"),
         'hostname': "huschteguzzel.de",
     },
 }

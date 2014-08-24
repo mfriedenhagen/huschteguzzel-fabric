@@ -6,10 +6,3 @@ files = {
         'source': "etc/motd",
     },
 }
-
-actions = {
-    'apt_update': {
-        'cascade_skip': False,
-        'command': "apt-get update",
-    },
-}
