@@ -1,19 +1,4 @@
 files = {
-    '/etc/motd': {
-        'owner': 'root',
-        'group': 'root',
-        'mode': '0644',
-        'source': "etc/motd",
-    },
-    '/etc/default/jenkins': {
-        'owner': 'root',
-        'group': 'root',
-        'mode': '0644',
-        'source': "etc/default/jenkins",
-        'triggers': [
-            "svc_systemv:jenkins:restart",
-        ]
-    },
     '/etc/nginx/sites-available/default': {
         'owner': 'root',
         'group': 'root',
@@ -47,7 +32,6 @@ files = {
 
 svc_systemv = {
     'nginx': {'running': True},
-    'jenkins': {'running': True},
 }
 
 symlinks = {
@@ -58,12 +42,5 @@ symlinks = {
         "needs": [
             "file:/etc/nginx/sites-available/default"
         ]
-    },
-}
-
-actions = {
-    'apt_update': {
-        'cascade_skip': False,
-        'command': "apt-get update",
     },
 }
