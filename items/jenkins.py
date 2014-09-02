@@ -1,19 +1,34 @@
-# vim: fileencoding=utf-8
-import json
-import logging
-import time
-from fabric.decorators import task
-from fabric.operations import require, sudo
-from fabric.state import env
-from fabric.utils import abort
-import requests
-
 __author__ = 'mirko'
 
-UPDATES_URL = env.get("jenkins_updates_url", "https://updates.jenkins-ci.org/update-center.json?id=default")
-JENKINS_URL = env.get("jenkins_url", "https://huschteguzzel.de/hudson/")
+from bundlewrap.items import Item, ItemStatus
 
-LOG = logging.getLogger("jenkins_support")
+import json
+import logging
+import requests
+import time
+from fabric.utils import abort
+from fabric.operations import require
+from fabric.state import env
+
+logging.getLogger("requests").setLevel(logging.DEBUG)
+
+LOG = logging.getLogger("jenkins")
+
+
+def update_center_(updates_url, jenkins_url):
+    require("jenkins_user")
+    require("jenkins_token")
+    auth = (env.jenkins_user, env.jenkins_token)
+    LOG.info("jenkins_update_center: UPDATES_URL={}".format(updates_url))
+    raw = requests.get(updates_url).content
+    json_text = raw.split('\n')[1]
+    json.loads(json_text)
+    post_back_url = jenkins_url + 'updateCenter/byId/default/postBack'
+    LOG.info("jenkins_update_center: post_back_url={}".format(post_back_url))
+    reply = requests.post(post_back_url, data=json_text, auth=auth)
+    if not reply.ok:
+        abort("updates upload not ok {}".format(reply.text))
+    LOG.info('applied updates json')
 
 
 class JenkinsUpdatePlugins(object):
@@ -87,62 +102,51 @@ class JenkinsUpdatePlugins(object):
         return requests.get(url, auth=self.auth)
 
 
-@task
-def update_center():
+class Jenkins(Item):
     """
-    Updates plugin information from UPDATES_URL.
+    A jenkins.
     """
-    require("jenkins_user")
-    require("jenkins_token")
-    auth = (env.jenkins_user, env.jenkins_token)
-    LOG.info("jenkins_update_center: UPDATES_URL={}".format(UPDATES_URL))
-    raw = requests.get(UPDATES_URL).content
-    json_text = raw.split('\n')[1]
-    json.loads(json_text)
-    post_back_url = JENKINS_URL + 'updateCenter/byId/default/postBack'
-    LOG.info("jenkins_update_center: post_back_url={}".format(post_back_url))
-    reply = requests.post(post_back_url, data=json_text, auth=auth)
-    if not reply.ok:
-        abort("updates upload not ok {}".format(reply.text))
-    LOG.info('applied updates json')
+    BUNDLE_ATTRIBUTE_NAME = "jenkins"
+    DEPENDS_STATIC = []
+    ITEM_ATTRIBUTES = {
+        'jenkins_url': "default value",
+        "jenkins_updates_url": "https://updates.jenkins-ci.org/update-center.json?id=default",
+    }
+    ITEM_TYPE_NAME = "jenkins"
+    PARALLEL_APPLY = True
+    REQUIRED_ATTRIBUTES = ['jenkins_url']
 
+    def __init__(self, bundle, name, attributes, has_been_triggered=False, skip_validation=False,
+                 skip_name_validation=False):
+        Item.__init__(self, bundle, name, attributes, has_been_triggered, skip_validation,
+                      skip_name_validation)
+        update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
 
-@task
-def restart():
-    """
-    Restarts Jenkins
-    """
-    require("jenkins_user")
-    require("jenkins_token")
-    sudo("/etc/init.d/jenkins restart")
-    auth = (env.jenkins_user, env.jenkins_token)
+    def __repr__(self):
+        return "<Jenkins jenkins_url:{}, jenkins_updates_url:{}>".format(
+            self.attributes['jenkins_url'],
+            self.attributes['jenkins_updates_url'])
 
+    def ask(self, status):
+        """
+        Returns a string asking the user if this item should be
+        implemented.
+        """
+        return ""
 
-@task
-def show_outdated_plugins():
-    """
-    Shows all outdated plugins.
-    """
-    require("jenkins_user")
-    require("jenkins_token")
-    j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
-    j.get_updated_plugins_metadata()
-    LOG.info("plugins_xml: {}".format(j.plugins_xml))
+    def fix(self, status):
+        """
+        Do whatever is necessary to correct this item.
+        """
+        update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
 
-@task
-def update_plugins():
-    """
-    Updates jenkins plugins.
-    """
-    require("jenkins_user")
-    require("jenkins_token")
-    j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
-    j.get_updated_plugins_metadata()
-    LOG.info("plugins_xml: {}".format(j.plugins_xml))
-    if j.plugins_xml != "<root></root>":
-        j.prevalidate_configuration()
-        j.install_necessary_plugins()
-        j.wait_for_installation_of_plugins()
-        LOG.info("Ready for restart")
-    else:
-        LOG.info("No updated plugins found")
+    def get_status(self):
+        """
+        Returns an ItemStatus instance describing the current status of
+        the item on the actual node. Must not be cached.
+        """
+        return ItemStatus(
+            correct=False,
+            description="No description available.",
+            info={},
+        )

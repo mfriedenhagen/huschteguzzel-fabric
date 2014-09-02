@@ -10,6 +10,12 @@ files = {
     },
 }
 
+#jenkins = {
+#    "huschteguzzel": {
+#        "jenkins_url": "https://huschteguzzel.de/hudson/"
+#    }
+#}
+
 svc_systemv = {
     'jenkins': {'running': True},
 }
