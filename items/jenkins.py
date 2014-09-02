@@ -1,3 +1,5 @@
+from bundlewrap.exceptions import BundleError
+
 __author__ = 'mirko'
 
 from bundlewrap.items import Item, ItemStatus
@@ -120,7 +122,7 @@ class Jenkins(Item):
                  skip_name_validation=False):
         Item.__init__(self, bundle, name, attributes, has_been_triggered, skip_validation,
                       skip_name_validation)
-        update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
+        #update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
 
     def __repr__(self):
         return "<Jenkins jenkins_url:{}, jenkins_updates_url:{}>".format(
@@ -138,7 +140,7 @@ class Jenkins(Item):
         """
         Do whatever is necessary to correct this item.
         """
-        update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
+        #update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
 
     def get_status(self):
         """
@@ -146,7 +148,18 @@ class Jenkins(Item):
         the item on the actual node. Must not be cached.
         """
         return ItemStatus(
-            correct=False,
+            correct=True,
             description="No description available.",
             info={},
         )
+
+    @classmethod
+    def validate_attributes(cls, bundle, item_id, attributes):
+        jenkins_url = attributes["jenkins_url"]
+        if not (jenkins_url.startswith("http://") or jenkins_url.startswith("https://")):
+            raise BundleError(
+                "jenkins_url:{} does not start with 'http://' or 'https://'".format(jenkins_url))
+        jenkins_updates_url = attributes.get("jenkins_updates_url", cls.ITEM_ATTRIBUTES["jenkins_updates_url"])
+        if not (jenkins_updates_url.startswith("http://") or jenkins_updates_url.startswith("https://")):
+            raise BundleError(
+                "jenkins_updates_url:{} does not start with 'http://' or 'https://'".format(jenkins_updates_url))
