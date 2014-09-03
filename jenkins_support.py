@@ -42,7 +42,7 @@ def show_outdated_plugins():
     """
     require("jenkins_user")
     require("jenkins_token")
-    j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
+    j = jenkins.JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
     j.get_updated_plugins_metadata()
     LOG.info("plugins_xml: {}".format(j.plugins_xml))
 
@@ -53,7 +53,7 @@ def update_plugins():
     """
     require("jenkins_user")
     require("jenkins_token")
-    j = JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
+    j = jenkins.JenkinsUpdatePlugins(JENKINS_URL, env.jenkins_user, env.jenkins_token)
     j.get_updated_plugins_metadata()
     LOG.info("plugins_xml: {}".format(j.plugins_xml))
     if j.plugins_xml != "<root></root>":
