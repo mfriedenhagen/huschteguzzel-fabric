@@ -8,7 +8,7 @@ NAME=jenkins
 JAVA=/usr/lib/jvm/java-7-oracle/bin/java
 
 # arguments to pass to java
-JAVA_ARGS="-Xmx1024m -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:MaxPermSize=256m"
+JAVA_ARGS="-Djava.awt.headless=true -Xmx1024m -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:MaxPermSize=256m"
 
 PIDFILE=/var/run/jenkins/jenkins.pid
 
