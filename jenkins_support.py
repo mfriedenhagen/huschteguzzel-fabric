@@ -4,7 +4,7 @@ import logging
 
 from items import jenkins
 from fabric.decorators import task
-from fabric.operations import require, sudo
+from fabric.operations import require, sudo, run
 from fabric.state import env
 from fabric.utils import abort
 import requests
@@ -33,6 +33,16 @@ def restart():
     require("jenkins_token")
     sudo("/etc/init.d/jenkins restart")
     auth = (env.jenkins_user, env.jenkins_token)
+
+@task
+def list_jenkins_processes():
+    """List all processes belonging to jenkins."""
+    run("ps -Ujenkins uf")
+
+@task
+def kill_periodic_jobs(grep_pattern="periodic"):
+    """Kills running periodic jobs"""
+    sudo("for i in `ps aux | grep java | grep %s | awk '{print $2}'`; do kill -9 $i; done" % grep_pattern)
 
 
 @task
