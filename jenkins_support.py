@@ -29,10 +29,7 @@ def restart():
     """
     Restarts Jenkins
     """
-    require("jenkins_user")
-    require("jenkins_token")
-    sudo("/etc/init.d/jenkins restart")
-    auth = (env.jenkins_user, env.jenkins_token)
+    run("sudo /etc/init.d/jenkins restart")
 
 @task
 def list_jenkins_processes():
