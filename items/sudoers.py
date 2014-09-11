@@ -51,16 +51,16 @@ class Sudoers(Item):
         path_info = PathInfo(self.node, target)
         correct = True
         status_info = {'needs_fixing': [], 'path_info': path_info}
+        local_sha1 = hash_local_file(self.template)
         if not path_info.exists:
             LOG.debug("%s does not exist", path_info)
             correct = False
             status_info['needs_fixing'].append(target)
-        local_sha1 = hash_local_file(self.template)
-        if path_info.sha1 != local_sha1:
+        elif path_info.sha1 != local_sha1:
             LOG.debug("%s has different content %s != %s", path_info, path_info.sha1, local_sha1)
             correct = False
             status_info['needs_fixing'].append(target)
-        if path_info.group != "root" or path_info.owner != "root" or path_info.mode != "0640":
+        elif path_info.group != "root" or path_info.owner != "root" or path_info.mode != "0640":
             LOG.debug("%s has different ownership %s:%s or mode% %s",
                 path_info,
                 path_info.owner,
