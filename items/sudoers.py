@@ -1,6 +1,7 @@
 __author__ = 'mirko'
 
 from os.path import basename, exists, join
+import subprocess
 from bundlewrap.exceptions import BundleError
 from bundlewrap.items import Item, ItemStatus
 from bundlewrap.utils import LOG, cached_property, hash_local_file
@@ -37,7 +38,7 @@ class Sudoers(Item):
             group="root"
         )
         LOG.debug("Checking temporary sudo-file: %s", tmp_name)
-        self.node.run("visudo -c -f {}".format(tmp_name))
+        self.node.run("/usr/sbin/visudo -c -f {}".format(tmp_name))
         self.node.run("mv -f -- {} /etc/sudoers.d/{}".format(tmp_name, base_name))
 
     def get_status(self):
@@ -90,6 +91,10 @@ class Sudoers(Item):
                 item=self.id,
                 path=self.template,
             ))
+        try:
+            subprocess.check_output(("/usr/sbin/visudo", "-c", "-f", self.template))
+        except subprocess.CalledProcessError, e:
+            raise BundleError(str(e))
 
 
 
