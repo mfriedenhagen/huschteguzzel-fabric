@@ -34,7 +34,7 @@ def restart():
 @task
 def list_jenkins_processes():
     """List all processes belonging to jenkins."""
-    run("ps -Ujenkins uf")
+    run("ps -Ujenkins ufww")
 
 @task
 def kill_periodic_jobs(grep_pattern="periodic"):
