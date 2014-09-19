@@ -40,7 +40,7 @@ def apt_get_update():
     """
     apt-get update -qq
     """
-    run("sudo /usr/bin/apt-get update -qq", quiet=True)
+    run("sudo /usr/bin/apt-get update -q")
 
 
 @task

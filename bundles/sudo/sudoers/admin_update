@@ -1,5 +1,5 @@
 # Managed by bundlewrap
 %admin ALL=(ALL) ALL
 %admin ALL=NOPASSWD: /etc/init.d/jenkins
-%admin ALL=NOPASSWD: /usr/bin/apt-get update -qq
+%admin ALL=NOPASSWD: /usr/bin/apt-get update -q
 %admin ALL=NOPASSWD: /usr/bin/apt-get upgrade -q -y
