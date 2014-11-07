@@ -1,0 +1,5 @@
+---
+- name: Copy jenkins.list file
+  copy: src=jenkins.list dest=/etc/apt/sources.list.d/jenkins.list
+- name: Copy webupd8team-java-precise.list file
+  copy: src=webupd8team-java-precise.list dest=/etc/apt/sources.list.d/webupd8team-java-precise.list

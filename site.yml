@@ -1,0 +1,6 @@
+---
+- name: Install needed packages
+  hosts: jenkins
+  user: root
+  roles:
+    - common
