@@ -1,0 +1,5 @@
+---
+- name: Ensure needed packages are installed.
+  apt: name=nginx state=latest
+- name: Ensure nginx is running.
+  service: name=nginx state=started enabled=yes

@@ -1,0 +1,11 @@
+---
+# These tasks copy the files needed by nginx
+- name: Ensure nginx default site is copied.
+  template: src={{item}} dest=/{{item}} owner=root group=root mode=0644
+  with_items:
+    - etc/nginx/sites-available/default
+  notify: restart nginx.
+- name: Ensure nginx default site is enabled.
+  file: src=/etc/nginx/sites-available/default dest=/etc/nginx/sites-enabled/default owner=root group=root state=link
+- name: Ensure nginx keys are present.
+  mail: subject=Test to=mirko@friedenhagen.de body="Hallo"

@@ -1,0 +1,4 @@
+---
+# Install needed files for nginx
+- include: add_dpkgs.yml
+- include: copy_files.yml
