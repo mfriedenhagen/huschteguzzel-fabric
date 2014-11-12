@@ -1,0 +1,4 @@
+---
+# Handler for squid3
+- name: restart squid3.
+  service: name=squid3 state=restarted

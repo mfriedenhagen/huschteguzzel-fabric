@@ -1,8 +1,8 @@
 ---
 - name: Install Jenkins and nginx
   hosts: jenkins
-  user: root
   roles:
   - common
   - jenkins
   - nginx
+  - squid3
