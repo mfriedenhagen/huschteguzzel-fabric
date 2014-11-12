@@ -1,2 +1,0 @@
-# {{ ansible_managed }}
-deb http://pkg.jenkins-ci.org/debian binary/

@@ -3,4 +3,5 @@
   hosts: jenkins
   user: root
   roles:
+  - common
   - jenkins

@@ -1,5 +1,21 @@
 ---
-- name: Copy jenkins.list file
-  template: src=jenkins.list dest=/etc/apt/sources.list.d/jenkins.list
-- name: Copy webupd8team-java-precise.list file
-  template: src=webupd8team-java-precise.list dest=/etc/apt/sources.list.d/webupd8team-java-precise.list
+- name: Install needed base packages for development.
+  apt: name={{item}} state=latest
+  with_items:
+  - autotools-dev
+  - coreutils
+  - devscripts
+  - git
+  - libxml2
+  - libxml2-dev
+  - libxml2-utils
+  - makedev
+  - manpages-dev
+  - markdown
+  - python-dev
+  - python2.7-dev
+  - ruby-dev
+  - screen
+  - subversion
+  - tmux
+  - xml-core
