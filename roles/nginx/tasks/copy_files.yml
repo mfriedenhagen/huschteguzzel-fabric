@@ -5,7 +5,14 @@
   with_items:
     - etc/nginx/sites-available/default
   notify: restart nginx.
+
 - name: Ensure nginx default site is enabled.
   file: src=/etc/nginx/sites-available/default dest=/etc/nginx/sites-enabled/default owner=root group=root state=link
-- name: Ensure nginx keys are present.
-  mail: subject=Test to=mirko@friedenhagen.de body="Hallo"
+
+- name: Ensure nginx crt is present.
+  copy: src=data/nginx/files/etc/nginx/{{ansible_nodename}}.crt dest=/etc/nginx/{{ansible_nodename}}.crt owner=root group=root mode=0444
+  notify: restart nginx.
+
+- name: Ensure nginx key are present.
+  copy: src=data/nginx/files/etc/nginx/{{ansible_nodename}}.key dest=/etc/nginx/{{ansible_nodename}}.key owner=root group=root mode=0400
+  notify: restart nginx.
