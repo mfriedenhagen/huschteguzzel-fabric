@@ -1,0 +1,11 @@
+---
+# These tasks copy the files needed by jenkins
+- name: Ensure jenkins default is copied.
+  copy: src={{item}} dest=/{{item}} owner=root group=root mode=0644
+  with_items:
+    - etc/default/jenkins
+- name: Ensure jenkins maven files exist.
+  copy: src=m2/{{item}} dest=/var/lib/jenkins/.m2/{{item}} owner=jenkins group=adm mode=0640
+  with_items:
+    - settings.xml
+    - toolchains.xml

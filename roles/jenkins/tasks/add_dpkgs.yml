@@ -1,0 +1,7 @@
+---
+- name: Ensure needed packages are installed.
+  apt: name={{item}} state=latest
+  with_items:
+  - oracle-java7-installer
+  - oracle-java8-installer
+  - jenkins
