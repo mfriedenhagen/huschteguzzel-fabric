@@ -10,7 +10,7 @@
   file: src=/etc/nginx/sites-available/default dest=/etc/nginx/sites-enabled/default owner=root group=root state=link
 
 - name: Ensure nginx crt is present.
-  copy: src=data/nginx/files/etc/nginx/{{ansible_fdqn}}.crt dest=/etc/nginx/{{ansible_fdqn}}.crt owner=root group=root mode=0444
+  copy: src=data/nginx/files/etc/nginx/{{ansible_fqdn}}.crt dest=/etc/nginx/{{ansible_fqdn}}.crt owner=root group=root mode=0444
   notify: restart nginx.
 
 - name: Ensure nginx key are present.
