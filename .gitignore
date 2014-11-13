@@ -5,3 +5,4 @@ target
 nosetests.xml
 data/*/files/etc/nginx/*.crt
 data/*/files/etc/nginx/*.key
+.vagrant/

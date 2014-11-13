@@ -1,6 +1,10 @@
 ---
 - name: Install Jenkins and nginx
-  hosts: jenkins
+  hosts:
+  - jenkins
+  - vagrant
+  pre_tasks:
+  - apt: update_cache=true
   roles:
   - common
   - jenkins
