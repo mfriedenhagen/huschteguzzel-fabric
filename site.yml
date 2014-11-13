@@ -4,6 +4,10 @@
   - jenkins
   - vagrant
   pre_tasks:
+  - name: Ensure GPG keys of Java repository is present.
+    apt_key: keyserver="hkp://keyserver.ubuntu.com:80" id="EEA14886"
+  - name: Ensure GPG keys of Jenkins repository is present.
+    apt_key: url="http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
   - apt: update_cache=true
   roles:
   - common
