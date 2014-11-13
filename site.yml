@@ -6,6 +6,10 @@
   pre_tasks:
   - name: Ensure GPG keys of Java repository is present.
     apt_key: keyserver="hkp://keyserver.ubuntu.com:80" id="EEA14886"
+  - name: Accept the Oracle JDK8 license.
+    shell: "echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
+  - name: Accept the Oracle JDK7 license.
+    shell: "echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
   - name: Ensure GPG keys of Jenkins repository is present.
     apt_key: url="http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
   - apt: update_cache=true
