@@ -13,7 +13,7 @@
     - oracle-java8-installer
   - name: Ensure GPG keys of Jenkins repository is present.
     apt_key: url="http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
-  - apt: update_cache=true
+  - apt: update_cache=true cache_valid_time=600
   roles:
   - common
   - jenkins

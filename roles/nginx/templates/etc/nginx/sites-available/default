@@ -79,11 +79,11 @@ server {
 #
 server {
 	listen   443;
-	server_name  {{ansible_nodename}};
+	server_name  {{ansible_fqdn}};
 
 	ssl  on;
-	ssl_certificate      {{ansible_nodename}}.crt;
-	ssl_certificate_key  {{ansible_nodename}}.key;
+	ssl_certificate      {{ansible_fqdn}}.crt;
+	ssl_certificate_key  {{ansible_fqdn}}.key;
 
 	ssl_session_timeout  5m;
 
