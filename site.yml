@@ -5,6 +5,7 @@
   - vagrant
   pre_tasks:
   - local_action: debug var=gitinfo_revision
+  - local_action: debug var=gitinfo_modified
   - name: Ensure GPG keys of Java repository is present.
     apt_key: keyserver="hkp://keyserver.ubuntu.com:80" id="EEA14886"
   - name: Accept the Oracle JDK licenses.

@@ -44,8 +44,10 @@ class VarsModule(object):
         if VarsModule.revision is None:
             VarsModule.revision = subprocess.check_output(("git", "rev-parse", "--short", "--porcelain", "HEAD")).strip()
             VarsModule.branch = [branch for branch in subprocess.check_output(("git", "branch")).strip().split("\n") if branch.startswith("*")][0][2:]
+            VarsModule.modified = subprocess.check_output(("git", "status", "--porcelain")).strip() and "MODIFIED" or "UNMODIFIED"
         host.set_variable('gitinfo_revision', VarsModule.revision)
         host.set_variable('gitinfo_branch', VarsModule.branch)
+        host.set_variable('gitinfo_modified', VarsModule.modified)
 
 
     def get_group_vars(self, group, vault_password=None):
@@ -53,3 +55,4 @@ class VarsModule(object):
         return {}
 VarsModule.revision = None
 VarsModule.branch = None
+VarsModule.modified = None
