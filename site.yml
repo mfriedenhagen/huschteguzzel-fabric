@@ -1,5 +1,5 @@
 ---
-- name: Install Jenkins and nginx
+- name: Install jenkins, nginx and squid3.
   hosts:
   - jenkins
   - vagrant
