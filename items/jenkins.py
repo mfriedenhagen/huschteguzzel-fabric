@@ -1,8 +1,4 @@
-from bundlewrap.exceptions import BundleError
-
 __author__ = 'mirko'
-
-from bundlewrap.items import Item, ItemStatus
 
 import json
 import logging
@@ -104,62 +100,3 @@ class JenkinsUpdatePlugins(object):
         return requests.get(url, auth=self.auth)
 
 
-class Jenkins(Item):
-    """
-    A jenkins.
-    """
-    BUNDLE_ATTRIBUTE_NAME = "jenkins"
-    DEPENDS_STATIC = []
-    ITEM_ATTRIBUTES = {
-        'jenkins_url': "default value",
-        "jenkins_updates_url": "https://updates.jenkins-ci.org/update-center.json?id=default",
-    }
-    ITEM_TYPE_NAME = "jenkins"
-    PARALLEL_APPLY = True
-    REQUIRED_ATTRIBUTES = ['jenkins_url']
-
-    def __init__(self, bundle, name, attributes, has_been_triggered=False, skip_validation=False,
-                 skip_name_validation=False):
-        Item.__init__(self, bundle, name, attributes, has_been_triggered, skip_validation,
-                      skip_name_validation)
-        #update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
-
-    def __repr__(self):
-        return "<Jenkins jenkins_url:{}, jenkins_updates_url:{}>".format(
-            self.attributes['jenkins_url'],
-            self.attributes['jenkins_updates_url'])
-
-    def ask(self, status):
-        """
-        Returns a string asking the user if this item should be
-        implemented.
-        """
-        return ""
-
-    def fix(self, status):
-        """
-        Do whatever is necessary to correct this item.
-        """
-        #update_center_(self.attributes['jenkins_updates_url'], self.attributes['jenkins_url'])
-
-    def get_status(self):
-        """
-        Returns an ItemStatus instance describing the current status of
-        the item on the actual node. Must not be cached.
-        """
-        return ItemStatus(
-            correct=True,
-            description="No description available.",
-            info={},
-        )
-
-    @classmethod
-    def validate_attributes(cls, bundle, item_id, attributes):
-        jenkins_url = attributes["jenkins_url"]
-        if not (jenkins_url.startswith("http://") or jenkins_url.startswith("https://")):
-            raise BundleError(
-                "jenkins_url:{} does not start with 'http://' or 'https://'".format(jenkins_url))
-        jenkins_updates_url = attributes.get("jenkins_updates_url", cls.ITEM_ATTRIBUTES["jenkins_updates_url"])
-        if not (jenkins_updates_url.startswith("http://") or jenkins_updates_url.startswith("https://")):
-            raise BundleError(
-                "jenkins_updates_url:{} does not start with 'http://' or 'https://'".format(jenkins_updates_url))
