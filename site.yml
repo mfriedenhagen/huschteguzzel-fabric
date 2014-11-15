@@ -3,10 +3,6 @@
   hosts:
   - jenkins
   - vagrant
-  pre_tasks:
-  - local_action: debug var=gitinfo_revision
-  - local_action: debug var=gitinfo_modified
-  - local_action: debug var=gitinfo_branch
   roles:
   - common
   - java
