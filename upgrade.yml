@@ -1,0 +1,9 @@
+---
+- name: Upgrade all installed packages.
+  hosts:
+  - jenkins
+  - vagrant
+  gather_facts: no
+  tasks:
+  - apt: update_cache=true
+  - apt: upgrade=yes
