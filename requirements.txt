@@ -1,5 +1,6 @@
-Fabric==1.9.1
-git+https://github.com/mfriedenhagen/bundlewrap.git@mirkos_patches#egg=bundlewrap
+Fabric
+ansible
+keyring
 influxdb==0.1.11
 nose==1.3.3
 requests==2.3.0
