@@ -1,8 +1,8 @@
 ---
 # These tasks add the needed repositories for Jenkins
+- name: Ensure GPG keys of Jenkins repository is present.
+  apt_key: url="http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key"
 - name: Ensure needed repository lists are added.
   apt_repository: repo="{{item}}" state=present update_cache=True
   with_items:
     - deb http://pkg.jenkins-ci.org/debian binary/
-    - deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
-    - deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
