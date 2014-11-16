@@ -1,9 +1,5 @@
 ---
 - name: Ensure needed packages are installed.
-  apt: name={{item}} state=latest
-  with_items:
-  - oracle-java7-installer
-  - oracle-java8-installer
-  - jenkins
+  apt: name=jenkins state=latest
 - name: Ensure jenkins is running.
   service: name=jenkins state=started enabled=yes
