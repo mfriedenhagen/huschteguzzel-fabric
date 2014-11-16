@@ -10,4 +10,7 @@
   - nginx
   - squid3
   post_tasks:
-  - lineinfile: dest=/etc/motd regexp="^MANAGED BY ANSIBLE .*$" line="MANAGED BY ANSIBLE rev={{gitinfo_revision}}, branch={{gitinfo_branch}} status={{gitinfo_modified}}"
+  - lineinfile:
+      dest=/etc/motd
+      regexp='^MANAGED BY ANSIBLE .*$'
+      line='MANAGED BY ANSIBLE rev={{gitinfo_revision}}, branch={{gitinfo_branch}} status={{gitinfo_modified}}'
