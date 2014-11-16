@@ -1,8 +1,9 @@
 ---
 - name: Install jenkins, nginx and squid3.
   hosts:
-  - jenkins
-  - vagrant
+  - all
+  pre_tasks:
+  - apt: update_cache=true
   roles:
   - common
   - sudoers

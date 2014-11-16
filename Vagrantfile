@@ -29,6 +29,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Run commands as root.
     ansible.verbose = 'vvvv'
     ansible.sudo = true
-    ansible.limit = 'vagrant'
   end
 end
