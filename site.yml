@@ -5,6 +5,7 @@
   - vagrant
   roles:
   - common
+  - sudoers
   - java
   - jenkins
   - nginx
