@@ -1,0 +1,5 @@
+---
+- name: recreate aliases.db
+  command: /usr/bin/newaliases
+- name: restart postfix
+  service: name=postfix state=restarted

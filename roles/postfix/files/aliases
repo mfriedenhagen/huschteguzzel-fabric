@@ -1,0 +1,6 @@
+# Added by installer for initial user
+postmaster: mirko.friedenhagen@1und1.de,volker.fuessler@1und1.de,mario.mancino@1und1.de,stefan.brausch@1und1.de
+root: postmaster
+hostmaster: postmaster
+webmaster: postmaster
+devnull: /dev/null

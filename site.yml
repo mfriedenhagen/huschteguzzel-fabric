@@ -9,6 +9,7 @@
   - jenkins
   - nginx
   - squid3
+  - postfix
   post_tasks:
   - lineinfile:
       dest=/etc/motd
