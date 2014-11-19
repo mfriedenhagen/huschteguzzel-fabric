@@ -27,6 +27,6 @@
     group=root
     mode={{item.mode}}
   with_items:
-  - {extension: crt, mode: 0444} # be less strict this is public.
-  - {extension: key, mode: 0400} # be strict here, this is a secret.
+  - {extension: crt, mode: "0444"} # be less strict this is public.
+  - {extension: key, mode: "0400"} # be strict here, this is a secret.
   notify: restart nginx.

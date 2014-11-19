@@ -9,6 +9,9 @@
 - name: Ensure jenkins .m2 directory does exist.
   file: path=/var/lib/jenkins/.m2/ state=directory owner=jenkins group=adm mode=0750
 
+- name: Ensure jenkins .vnc directory does exist.
+  file: path=/var/lib/jenkins/.vnc/ state=directory owner=jenkins group=adm mode=0750
+
 - name: Ensure jenkins maven files exist.
   copy: src=m2/{{item}} dest=/var/lib/jenkins/.m2/{{item}} owner=jenkins group=adm mode=0640
   with_items:

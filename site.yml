@@ -3,7 +3,7 @@
   hosts:
   - all
   pre_tasks:
-  - apt: update_cache=true
+  - apt: update_cache=true cache_valid_time=600
   roles:
   - common
   - sudoers
