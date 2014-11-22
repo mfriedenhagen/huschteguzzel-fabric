@@ -1,6 +1,8 @@
 ---
 - name: Install needed base packages for development.
-  apt: name={{item}} state=latest
+  apt:
+    name: "{{item}}"
+    state: latest
   with_items:
   - autotools-dev
   - build-essential

@@ -2,17 +2,22 @@
 - name: Ensure GPG keys of Java repository is present.
   apt_key: keyserver="hkp://keyserver.ubuntu.com:80" id="EEA14886"
 - name: Accept the Oracle JDK licenses.
-  debconf: name={{item}} question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
-  with_items:
-  - oracle-java7-installer
-  - oracle-java8-installer
+  debconf:
+    name: "{{item}}"
+    question: 'shared/accepted-oracle-license-v1-1' 
+    value: 'true' 
+    vtype: 'select'
+  with_items: oracle_jdk_installers
 - name: Ensure needed repository lists are added.
-  apt_repository: repo="{{item}}" state=present update_cache=True
+  apt_repository:
+    repo: "{{item}}"
+    state: present
+    update_cache: True
   with_items:
     - deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
     - deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
 - name: Ensure JDKs are installed.
-  apt: name={{item}} state=latest
-  with_items:
-  - oracle-java7-installer
-  - oracle-java8-installer
+  apt:
+    name: "{{item}}"
+    state: latest
+  with_items: oracle_jdk_installers

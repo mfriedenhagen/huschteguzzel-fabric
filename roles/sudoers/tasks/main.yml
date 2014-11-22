@@ -2,8 +2,8 @@
 # tasks file for roles/sudoers
 - name: Copy sudoers file.
   copy:
-    src=admin_update
-    dest=/etc/sudoers.d/admin_update
-    owner=root
-    group=root
-    mode=0400
+    src: admin_update
+    dest: /etc/sudoers.d/admin_update
+    owner: root
+    group: root
+    mode: 0400

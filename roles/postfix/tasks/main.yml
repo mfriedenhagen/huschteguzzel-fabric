@@ -5,14 +5,14 @@
   service: name=postfix state=started enabled=yes
 - name: Copy postfix aliases.
   copy:
-    src=aliases
-    dest=/etc/aliases
+    src: aliases
+    dest: /etc/aliases
   notify:
   - recreate aliases.db
 - name: Copy specific configurations.
   copy:
-    src={{item}}
-    dest=/etc/postfix/{{item}}
+    src: "{{item}}"
+    dest: "/etc/postfix/{{item}}"
   with_items:
   - main.cf
   - gitlabtest.com.regexp
