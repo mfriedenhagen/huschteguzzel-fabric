@@ -1,4 +1,6 @@
 ---
 # Handler for Jenkins
 - name: restart jenkins
-  service: name=jenkins state=restarted
+  service:
+    name: jenkins
+    state: restarted

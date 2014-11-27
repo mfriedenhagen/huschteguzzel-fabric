@@ -4,21 +4,21 @@
     name: "{{item}}"
     state: latest
   with_items:
-  - autotools-dev
-  - build-essential
-  - coreutils
-  - devscripts
-  - git
-  - libxml2
-  - libxml2-dev
-  - libxml2-utils
-  - makedev
-  - manpages-dev
-  - markdown
-  - python-dev
-  - python2.7-dev
-  - ruby-dev
-  - screen
-  - subversion
-  - tmux
-  - xml-core
+    - autotools-dev
+    - build-essential
+    - coreutils
+    - devscripts
+    - git
+    - libxml2
+    - libxml2-dev
+    - libxml2-utils
+    - makedev
+    - manpages-dev
+    - markdown
+    - python-dev
+    - python2.7-dev
+    - ruby-dev
+    - screen
+    - subversion
+    - tmux
+    - xml-core

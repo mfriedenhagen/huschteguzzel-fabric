@@ -1,20 +1,25 @@
 ---
 - name: Ensure needed packages are installed.
-  apt: name=postfix state=latest
+  apt:
+    name: postfix
+    state: latest
 - name: Ensure service is running.
-  service: name=postfix state=started enabled=yes
+  service:
+    name: postfix
+    state: started
+    enabled: yes
 - name: Copy postfix aliases.
   copy:
     src: aliases
     dest: /etc/aliases
   notify:
-  - recreate aliases.db
+    - recreate aliases.db
 - name: Copy specific configurations.
   copy:
     src: "{{item}}"
     dest: "/etc/postfix/{{item}}"
   with_items:
-  - main.cf
-  - gitlabtest.com.regexp
+    - main.cf
+    - gitlabtest.com.regexp
   notify:
-  - restart postfix
+    - restart postfix

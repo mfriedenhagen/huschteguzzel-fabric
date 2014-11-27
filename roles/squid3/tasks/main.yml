@@ -1,11 +1,21 @@
 ---
 # Stuff for squid3.
 - name: Ensure squid3 is installed.
-  apt: name=squid3 state=latest
+  apt:
+    name: squid3
+    state: latest
 
 - name: Ensure squid.conf is present.
-  copy: src=etc/squid3/squid.conf dest=/etc/squid3/squid.conf owner=root group=root mode=0644
+  copy:
+    src: etc/squid3/squid.conf
+    dest: /etc/squid3/squid.conf
+    owner: root
+    group: root
+    mode: 0644
   notify: restart squid3.
 
 - name: Ensure squid3 is running.
-  service: name=squid3 state=started enabled=yes
+  service:
+    name: squid3
+    state: started
+    enabled: yes

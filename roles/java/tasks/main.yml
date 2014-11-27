@@ -1,6 +1,8 @@
 ---
 - name: Ensure GPG keys of Java repository is present.
-  apt_key: keyserver="hkp://keyserver.ubuntu.com:80" id="EEA14886"
+  apt_key:
+    keyserver: "hkp://keyserver.ubuntu.com:80"
+    id: "EEA14886"
 - name: Accept the Oracle JDK licenses.
   debconf:
     name: "{{item}}"
