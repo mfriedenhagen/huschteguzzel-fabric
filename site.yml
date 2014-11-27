@@ -21,9 +21,14 @@
     - name: Create provision fact
       copy:
         dest: /etc/ansible/facts.d/provison.fact
-        content: "{{ gitinfo | to_nice_json }}"
+        content: |
+          [gitinfo]
+          revision={{gitinfo.revision}}
+          branch={{gitinfo.branch}}
+          status={{gitinfo.status}}
+          user={{gitinfo.user}}
     - name: Update motd
       lineinfile:
         dest: /etc/motd
         regexp: '^MANAGED BY ANSIBLE .*$'
-        line: 'MANAGED BY ANSIBLE rev={{gitinfo.revision}}, branch={{gitinfo.branch}}, status={{gitinfo.modified}}, user={{gitinfo.user}}'
+        line: 'MANAGED BY ANSIBLE rev={{gitinfo.revision}}, branch={{gitinfo.branch}}, status={{gitinfo.status}}, user={{gitinfo.user}}'

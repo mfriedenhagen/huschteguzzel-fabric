@@ -36,7 +36,7 @@ class VarsModule(object):
             info = {}
             info["revision"] = subprocess.check_output(("git", "rev-parse", "--short", "--porcelain", "HEAD")).strip()
             info["branch"] = [branch for branch in subprocess.check_output(("git", "branch")).strip().split("\n") if branch.startswith("*")][0][2:]
-            info["modified"] = subprocess.check_output(("git", "status", "--porcelain")).strip() and "MODIFIED" or "UNMODIFIED"
+            info["status"] = subprocess.check_output(("git", "status", "--porcelain")).strip() and "MODIFIED" or "UNMODIFIED"
             info["user"] = getpass.getuser()
             VarsModule.info = info
         host.set_variable('gitinfo', VarsModule.info)
