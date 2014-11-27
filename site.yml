@@ -21,7 +21,7 @@
     - name: Create provision fact
       copy:
         dest: /etc/ansible/facts.d/provison.fact
-        content: "{{ gitinfo | to_nice_yaml }}"
+        content: "{{ gitinfo | to_nice_json }}"
     - name: Update motd
       lineinfile:
         dest: /etc/motd
