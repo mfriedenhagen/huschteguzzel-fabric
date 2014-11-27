@@ -1,19 +1,29 @@
 ---
 - name: Install jenkins, nginx and squid3.
-  hosts:
-  - all
+  hosts: all
   pre_tasks:
-  - apt: update_cache=true cache_valid_time=600
+    - apt:
+        update_cache: true
+        cache_valid_time: 600
   roles:
-  - common
-  - sudoers
-  - java
-  - jenkins
-  - nginx
-  - squid3
-  - postfix
+    - common
+    - sudoers
+    - java
+    - jenkins
+    - nginx
+    - squid3
+    - postfix
   post_tasks:
-  - lineinfile:
-      dest=/etc/motd
-      regexp='^MANAGED BY ANSIBLE .*$'
-      line='MANAGED BY ANSIBLE rev={{gitinfo_revision}}, branch={{gitinfo_branch}} status={{gitinfo_modified}}'
+    - name: Create facts directory
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+    - name: Create provision fact
+      copy:
+        dest: /etc/ansible/facts.d/provison.fact
+        content: "{{ gitinfo | to_nice_yaml }}"
+    - name: Update motd
+      lineinfile:
+        dest: /etc/motd
+        regexp: '^MANAGED BY ANSIBLE .*$'
+        line: 'MANAGED BY ANSIBLE rev={{gitinfo.revision}}, branch={{gitinfo.branch}}, status={{gitinfo.modified}}, user={{gitinfo.user}}'
