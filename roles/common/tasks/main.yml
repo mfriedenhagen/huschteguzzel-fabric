@@ -9,6 +9,7 @@
     - coreutils
     - devscripts
     - git
+    - htop
     - libxml2
     - libxml2-dev
     - libxml2-utils
