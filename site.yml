@@ -27,8 +27,10 @@
           branch={{gitinfo.branch}}
           status={{gitinfo.status}}
           user={{gitinfo.user}}
+      changed_when: false
     - name: Update motd
       lineinfile:
         dest: /etc/motd
         regexp: '^MANAGED BY ANSIBLE .*$'
         line: 'MANAGED BY ANSIBLE rev={{gitinfo.revision}}, branch={{gitinfo.branch}}, status={{gitinfo.status}}, user={{gitinfo.user}}'
+      changed_when: false
