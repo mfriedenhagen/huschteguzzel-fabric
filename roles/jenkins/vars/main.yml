@@ -1,3 +1,4 @@
+jenkins_cli_command: java -jar {{ jenkins_jar_location }} -s {{ jenkins_base_url }}
 jenkins_ci_org_key: |
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: GnuPG v1.4.9 (GNU/Linux)

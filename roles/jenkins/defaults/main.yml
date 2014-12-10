@@ -1,0 +1,7 @@
+jenkins_jar_location: /var/lib/jenkins/war/WEB-INF/jenkins-cli.jar
+jenkins_hostname: 127.0.0.1
+jenkins_port: 8000
+jenkins_context: hudson
+jenkins_base_url: http://{{ jenkins_hostname }}:{{ jenkins_port }}/{{ jenkins_context }}
+jenkins_plugins:
+  - git

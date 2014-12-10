@@ -1,0 +1,35 @@
+- name: Create Jenkins updates folder.
+  file:
+    path: /var/lib/jenkins/updates
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+    state: directory
+
+- name: Update Jenkins plugin data.
+  shell: curl -L http://updates.jenkins-ci.org/update-center.json | sed '1d;$d' > /var/lib/jenkins/updates/default.json
+  args:
+    creates: /var/lib/jenkins/updates/default.json
+  register: update_center
+  sudo_user: jenkins
+
+- name: Post updated plugin data to Jenkins.
+  shell: curl -X POST --data-binary @/var/lib/jenkins/updates/default.json {{ jenkins_base_url }}/updateCenter/byId/default/postBack
+  when: update_center|changed
+
+- name: Get list of outdated plugins
+  shell: "{{ jenkins_cli_command }} list-plugins | grep -e ')$' | awk '{ print $1 }'"
+  register: outdated_plugins
+  changed_when: outdated_plugins.stdout_lines
+
+- name: Install additional Jenkins plugins.
+  command: "{{ jenkins_cli_command }} install-plugin {{ item }}"
+  args:
+    creates: /var/lib/jenkins/plugins/{{ item }}.jpi
+  with_items: jenkins_plugins
+  notify: restart jenkins
+
+- name: Update outdated Jenkins plugins.
+  command: "{{ jenkins_cli_command }} install-plugin {{ item }}"
+  with_items: outdated_plugins.stdout_lines
+  notify: restart jenkins
