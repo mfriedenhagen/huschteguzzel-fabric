@@ -1,3 +1,4 @@
+jenkins_updatecenter_url: http://updates.jenkins-ci.org/update-center.json
 jenkins_jar_location: /var/lib/jenkins/war/WEB-INF/jenkins-cli.jar
 jenkins_hostname: 127.0.0.1
 jenkins_port: 8000
@@ -5,3 +6,16 @@ jenkins_context: hudson
 jenkins_base_url: http://{{ jenkins_hostname }}:{{ jenkins_port }}/{{ jenkins_context }}
 jenkins_plugins:
   - git
+  - email-ext
+  - html5-notifier-plugin
+  - template-project
+  - build-environment
+  - build-monitor-plugin
+  - buildtriggerbadge
+  - compact-columns
+  - doclinks
+  - embeddable-build-status
+  - jobConfigHistory
+  - github-oauth
+  - gitlab-plugin
+  - violations

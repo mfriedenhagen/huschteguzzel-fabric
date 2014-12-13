@@ -7,7 +7,7 @@
     state: directory
 
 - name: Update Jenkins plugin data.
-  shell: curl -L http://updates.jenkins-ci.org/update-center.json | sed '1d;$d' > /var/lib/jenkins/updates/default.json
+  shell: curl -L {{ jenkins_updatecenter_url }} | sed '1d;$d' > /var/lib/jenkins/updates/default.json
   args:
     creates: /var/lib/jenkins/updates/default.json
   register: update_center
