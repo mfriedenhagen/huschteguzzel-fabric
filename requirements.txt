@@ -1,7 +1,7 @@
 Fabric
 ansible
-keyring
 influxdb
+keyring
 nose
-requests
 redis
+requests

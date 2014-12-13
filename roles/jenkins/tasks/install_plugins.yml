@@ -6,6 +6,14 @@
     mode: 0755
     state: directory
 
+- name: Wait untils Jenkins web API is available
+  command: curl --head --silent {{ jenkins_base_url }}/
+  register: result
+  until: result.stdout.find("200 OK") != -1
+  retries: 12
+  delay: 5
+  changed_when: false
+
 - name: Update Jenkins plugin data.
   shell: curl -L {{ jenkins_updatecenter_url }} | sed '1d;$d' > /var/lib/jenkins/updates/default.json
   args:
@@ -14,7 +22,7 @@
   sudo_user: jenkins
 
 - name: Post updated plugin data to Jenkins.
-  shell: curl -X POST --data-binary @/var/lib/jenkins/updates/default.json {{ jenkins_base_url }}/updateCenter/byId/default/postBack
+  command: curl -X POST --data-binary @/var/lib/jenkins/updates/default.json {{ jenkins_base_url }}/updateCenter/byId/default/postBack
   when: update_center|changed
 
 - name: Get list of outdated plugins

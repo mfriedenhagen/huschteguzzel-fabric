@@ -2,9 +2,4 @@
 - include: add_repositories.yml
 - include: add_dpkgs.yml
 - include: copy_files.yml
-- name: Wait for Jenkins to start up before proceeding.
-  wait_for:
-    host: "{{ jenkins_hostname }}"
-    port: "{{ jenkins_port }}"
-    timeout: 300
 - include: install_plugins.yml
