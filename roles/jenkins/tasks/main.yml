@@ -3,3 +3,4 @@
 - include: add_dpkgs.yml
 - include: copy_files.yml
 - include: install_plugins.yml
+- include: install_maven.yml

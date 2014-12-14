@@ -1,0 +1,14 @@
+- name: Create Maven base directory
+  file:
+    path: /usr/local/maven
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Fetch and unpack Maven distributions.
+  shell: curl --silent {{ maven_download_base_url }}/{{ item }}/apache-maven-{{ item }}-bin.tar.gz | tar xz
+  args:
+    chdir: /usr/local/maven
+    creates: /usr/local/maven/apache-maven-{{ item }}/bin/mvn
+  with_items: maven_versions
