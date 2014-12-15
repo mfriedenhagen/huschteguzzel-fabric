@@ -20,6 +20,7 @@ jenkins_plugins:
   - gitlab-plugin
   - violations
   - simple-theme-plugin
+  - job-poll-action-plugin
 maven_download_base_url: http://repo1.maven.org/maven2/org/apache/maven/apache-maven
 maven_versions:
   - 2.2.1
