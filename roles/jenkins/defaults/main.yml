@@ -19,6 +19,7 @@ jenkins_plugins:
   - github-oauth
   - gitlab-plugin
   - violations
+  - simple-theme-plugin
 maven_download_base_url: http://repo1.maven.org/maven2/org/apache/maven/apache-maven
 maven_versions:
   - 2.2.1
