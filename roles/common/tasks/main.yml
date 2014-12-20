@@ -24,3 +24,11 @@
     - subversion
     - tmux
     - xml-core
+- name: Ensure rpcbind is stopped.
+  service:
+    name: "{{item}}"
+    state: stopped
+    enabled: no
+  with_items:
+    - rpcbind
+    - nfs-common
