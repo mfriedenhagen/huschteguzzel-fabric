@@ -1,7 +1,7 @@
 ---
 # These tasks copy the files needed by jenkins
 - name: Ensure jenkins default is copied.
-  copy:
+  template:
     src: "{{item}}"
     dest: "/{{item}}"
     owner: root
