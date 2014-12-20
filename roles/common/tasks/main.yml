@@ -16,6 +16,7 @@
     - makedev
     - manpages-dev
     - markdown
+    - ntp
     - python-dev
     - python2.7-dev
     - ruby-dev
