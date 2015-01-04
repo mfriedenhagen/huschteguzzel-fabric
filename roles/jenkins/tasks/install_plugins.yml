@@ -14,16 +14,24 @@
   delay: 5
   changed_when: false
 
+- name: Stat old Jenkins plugin data.
+  stat:
+    path: "{{ jenkins_updates_json }}"
+  register: jenkins_updates_json_old
+
 - name: Update Jenkins plugin data.
-  shell: curl -L {{ jenkins_updatecenter_url }} | sed '1d;$d' > /var/lib/jenkins/updates/default.json
-  args:
-    creates: /var/lib/jenkins/updates/default.json
-  register: update_center
+  shell: curl -L {{ jenkins_updatecenter_url }} | sed '1d;$d' > {{ jenkins_updates_json }}
   sudo_user: jenkins
+  changed_when: false
+
+- name: Stat new Jenkins plugin data.
+  stat:
+    path: "{{ jenkins_updates_json }}"
+  register: jenkins_updates_json_new
 
 - name: Post updated plugin data to Jenkins.
-  command: curl -X POST --data-binary @/var/lib/jenkins/updates/default.json {{ jenkins_base_url }}/updateCenter/byId/default/postBack
-  when: update_center|changed
+  command: curl -X POST --data-binary @{{ jenkins_updates_json }} {{ jenkins_base_url }}/updateCenter/byId/default/postBack
+  when: "not jenkins_updates_json_old.stat.exists or jenkins_updates_json_new.stat.checksum != jenkins_updates_json_old.stat.checksum"
 
 - name: Get list of outdated plugins
   shell: "{{ jenkins_cli_command }} list-plugins | grep -e ')$' | awk '{ print $1 }'"
