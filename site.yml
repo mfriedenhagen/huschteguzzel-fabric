@@ -2,7 +2,8 @@
 - name: Install jenkins, nginx and squid3.
   hosts: all
   pre_tasks:
-    - apt:
+    - name: Update apt cache
+      apt:
         update_cache: true
         cache_valid_time: 600
   roles:
