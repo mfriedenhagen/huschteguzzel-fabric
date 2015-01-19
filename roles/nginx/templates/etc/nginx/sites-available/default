@@ -6,6 +6,8 @@ server {
 
 	access_log  /var/log/nginx/{{ansible_fqdn}}.access.log;
 
+	client_max_body_size	20M;
+
 	location / {
 		root   /var/www/nginx-default;
 		index  index.html index.htm;
@@ -80,6 +82,9 @@ server {
 server {
 	listen   443;
 	server_name  {{ansible_fqdn}};
+
+	client_max_body_size	20M;
+
 
 	ssl  on;
 	ssl_certificate      {{ansible_fqdn}}.crt;
