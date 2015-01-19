@@ -34,7 +34,7 @@
   when: "not jenkins_updates_json_old.stat.exists or jenkins_updates_json_new.stat.checksum != jenkins_updates_json_old.stat.checksum"
 
 - name: Get list of outdated plugins
-  shell: "{{ jenkins_cli_command }} list-plugins | grep -e ')$' | awk '{ print $1 }'"
+  shell: "{{ jenkins_cli_command }} list-plugins | awk '$0~/\\)$/{ print $1 }'"
   register: outdated_plugins
   changed_when: outdated_plugins.stdout_lines
 
