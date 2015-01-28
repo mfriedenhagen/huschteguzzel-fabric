@@ -5,6 +5,7 @@
     state: latest
   with_items:
     - autotools-dev
+    - bpython
     - build-essential
     - coreutils
     - devscripts
@@ -18,6 +19,8 @@
     - markdown
     - ntp
     - python-dev
+    - python-pip
+    - python-virtualenv
     - python2.7-dev
     - ruby-dev
     - screen
