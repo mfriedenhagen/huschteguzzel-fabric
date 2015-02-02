@@ -1,0 +1,18 @@
+---
+# tasks file for grafana
+- name: Download and unpack Grafana
+  shell: curl --silent {{ grafana_download_url }} | tar xz
+  args:
+    chdir: "{{ nginx_www_root }}"
+    creates: "{{ nginx_www_root }}/grafana-{{ grafana_version }}/app/app.js"
+
+- name: Symlink installed grafana version to grafana
+  file:
+    src: "{{ nginx_www_root }}/grafana-{{ grafana_version }}"
+    dest: "{{ nginx_www_root }}/grafana"
+    state: link
+
+- name: Create grafana config
+  template:
+    src: config.js
+    dest: "{{ nginx_www_root }}/grafana/config.js"

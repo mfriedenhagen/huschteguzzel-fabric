@@ -9,7 +9,7 @@ server {
 	client_max_body_size	20M;
 
 	location / {
-		root   /var/www/nginx-default;
+		root   {{ nginx_www_root }};
 		index  index.html index.htm;
 	}
 
@@ -97,7 +97,7 @@ server {
 	ssl_prefer_server_ciphers   on;
 
 	location / {
-		root   /var/www/nginx-default;
+		root   {{ nginx_www_root }};
 		index  index.html index.htm;
 	}
 

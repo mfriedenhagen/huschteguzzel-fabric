@@ -2,3 +2,10 @@
 # Install needed files for nginx
 - include: add_dpkgs.yml
 - include: copy_files.yml
+- name: Create www root directory.
+  file:
+    path: /var/www/nginx-default
+    owner: root
+    group: root
+    mode: 0755
+    state: directory

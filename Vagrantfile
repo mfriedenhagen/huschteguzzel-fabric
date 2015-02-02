@@ -17,6 +17,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.network "forwarded_port", guest: 8086, host: 8086
+  config.vm.network "forwarded_port", guest: 8083, host: 8083
   config.vm.hostname = 'huschteguzzel.de'
   config.vm.provider "virtualbox" do |vb|
     # Don't boot with headless mode

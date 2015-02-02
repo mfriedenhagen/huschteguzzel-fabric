@@ -12,6 +12,7 @@
     - java
     - jenkins
     - nginx
+    - grafana
     - squid3
     - postfix
   post_tasks:

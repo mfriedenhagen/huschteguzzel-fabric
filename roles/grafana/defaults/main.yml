@@ -1,0 +1,5 @@
+---
+# defaults file for grafana
+grafana_version: 1.9.1
+grafana_download_url: http://grafanarel.s3.amazonaws.com/grafana-{{ grafana_version }}.tar.gz
+grafana_influxdb_server: localhost
