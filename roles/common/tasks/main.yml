@@ -35,3 +35,12 @@
   with_items:
     - rpcbind
     - nfs-common
+
+- name: Create jsonpp
+  copy:
+    dest: /usr/local/bin/jsonpp
+    mode: 0755
+    content: |
+        #!/usr/bin/python
+        import json, pprint,sys
+        pprint.pprint(json.load(sys.stdin))
