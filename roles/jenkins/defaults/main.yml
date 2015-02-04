@@ -20,6 +20,7 @@ jenkins_plugins:
   - jacoco
   - job-poll-action-plugin
   - jobConfigHistory
+  - metrics-graphite
   - simple-theme-plugin
   - template-project
   - violations
