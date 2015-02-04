@@ -1,6 +1,7 @@
 ---
 - include: add_repositories.yml
 - include: add_dpkgs.yml
-- include: copy_files.yml
+- include: copy_files_and_create_directories.yml
+- include: start_jenkins.yml
 - include: install_plugins.yml
 - include: install_maven.yml

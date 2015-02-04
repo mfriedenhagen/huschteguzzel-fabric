@@ -6,14 +6,6 @@
     mode: 0755
     state: directory
 
-- name: Wait untils Jenkins web API is available
-  command: curl --head --silent {{ jenkins_base_url }}/
-  register: result
-  until: result.stdout.find("200 OK") != -1
-  retries: 12
-  delay: 5
-  changed_when: false
-
 - name: Stat old Jenkins plugin data.
   stat:
     path: "{{ jenkins_updates_json }}"

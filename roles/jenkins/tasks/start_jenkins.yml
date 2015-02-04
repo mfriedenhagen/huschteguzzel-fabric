@@ -1,0 +1,16 @@
+---
+# Ensure Jenkins is started and up and running.
+- name: Ensure jenkins is running.
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: Wait untils Jenkins web API is available
+  command: curl --head --silent {{ jenkins_base_url }}/
+  register: result
+  until: result.stdout.find("200 OK") != -1
+  retries: 12
+  delay: 5
+  changed_when: false
+

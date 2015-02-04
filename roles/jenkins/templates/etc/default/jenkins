@@ -21,8 +21,6 @@ JENKINS_WAR=/usr/share/jenkins/jenkins.war
 
 # jenkins home location
 JENKINS_HOME=/var/lib/jenkins
-JAVA_ARGS="$JAVA_ARGS -Djava.endorsed.dirs=$JENKINS_HOME/lib -Djava.util.logging.config.file=$JENKINS_HOME/lib/logging.properties"
-JAVA_ARGS="$JAVA_ARGS -Dnet.logstash.logging.formatter.LogstashUtilFormatter.tags=local,jenkins"
 chmod -R go= $JENKINS_HOME/.vnc
 
 # set this to false if you don't want Hudson to run by itself
