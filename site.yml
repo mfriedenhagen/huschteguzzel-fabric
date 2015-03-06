@@ -10,11 +10,11 @@
     - common
     - sudoers
     - java
-    - jenkins
     - nginx
     - grafana
     - squid3
     - postfix
+    - jenkins
   post_tasks:
     - name: Create facts directory
       file:
