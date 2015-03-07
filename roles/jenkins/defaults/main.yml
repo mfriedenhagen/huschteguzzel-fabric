@@ -6,13 +6,16 @@ jenkins_https_port: 8443
 jenkins_context: ci
 jenkins_base_url: http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/{{ jenkins_context }}
 jenkins_plugins:
+  - analysis-collector
   - build-environment
   - build-monitor-plugin
   - buildtriggerbadge
+  - checkstyle
   - compact-columns
   - doclinks
   - email-ext
   - embeddable-build-status
+  - findbugs
   - git
   - github-oauth
   - gitlab-plugin
@@ -21,9 +24,9 @@ jenkins_plugins:
   - job-poll-action-plugin
   - jobConfigHistory
   - metrics-graphite
+  - pmd
   - simple-theme-plugin
   - template-project
-  - violations
 maven_download_base_url: http://repo1.maven.org/maven2/org/apache/maven/apache-maven
 maven_versions:
   - 2.2.1
