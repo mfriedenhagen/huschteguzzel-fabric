@@ -1,4 +1,4 @@
-# Managed by bundlewrap https://github.com/mfriedenhagen/huschteguzzel-fabric
+# Managed by ANSIBLE https://github.com/mfriedenhagen/huschteguzzel-fabric
 
 server {
 	listen   80 default;
