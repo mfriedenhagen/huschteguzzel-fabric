@@ -6,24 +6,9 @@
     mode: 0755
     state: directory
 
-- name: Stat old Jenkins plugin data.
-  stat:
-    path: "{{ jenkins_updates_json }}"
-  register: jenkins_updates_json_old
-
-- name: Update Jenkins plugin data.
-  shell: curl -L {{ jenkins_updatecenter_url }} | sed '1d;$d' > {{ jenkins_updates_json }}
-  sudo_user: jenkins
+- name: Update plugin data.
+  command: curl -s '{{ jenkins_base_url }}/updateCenter/site/default/api/json?pretty=true&tree=updates'
   changed_when: false
-
-- name: Stat new Jenkins plugin data.
-  stat:
-    path: "{{ jenkins_updates_json }}"
-  register: jenkins_updates_json_new
-
-- name: Post updated plugin data to Jenkins.
-  command: curl -X POST --data-binary @{{ jenkins_updates_json }} {{ jenkins_base_url }}/updateCenter/byId/default/postBack
-  when: "not jenkins_updates_json_old.stat.exists or jenkins_updates_json_new.stat.checksum != jenkins_updates_json_old.stat.checksum"
 
 - name: Get list of outdated plugins
   shell: "{{ jenkins_cli_command }} list-plugins | awk '$0~/\\)$/{ print $1 }'"
