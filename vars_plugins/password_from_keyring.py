@@ -1,5 +1,8 @@
 import getpass
-import keyring
+try:
+    import keyring
+except ImportError:
+    keyring = None
 import os
 
 class VarsModule(object):
@@ -24,7 +27,7 @@ class VarsModule(object):
     def get_host_vars(self, host, vault_password=None):
         """ Get host specific variables. """
         user = os.environ.get("ANSIBLE_USER")
-        if VarsModule.sudo_password is None and user is not None:
+        if VarsModule.sudo_password is None and user is not None and keyring is not None:
             VarsModule.sudo_password = keyring.get_password("ANSIBLE_PASSWORD", user + "@huschteguzzel.de")
         if VarsModule.sudo_password is None:
             VarsModule.sudo_password = getpass.getpass(prompt="sudo password")
