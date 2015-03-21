@@ -12,3 +12,12 @@
     chdir: /usr/local/maven
     creates: /usr/local/maven/apache-maven-{{ item }}/bin/mvn
   with_items: maven_versions
+
+- name: Create symlinks for default Maven.
+  file:
+    dest: /usr/local/bin/{{ item }}
+    src: /usr/local/maven/apache-maven-{{ maven_current_version }}/bin/{{ item }}
+    state: link
+  with_items:
+    - mvn
+    - mvnDebug
