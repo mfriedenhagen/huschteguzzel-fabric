@@ -1,3 +1,4 @@
+import prettytable
 import time
 
 
@@ -41,13 +42,19 @@ class CallbackModule(object):
         )
 
         # Just keep the top 10
-        results = results[:10]
-
+        results = results[:30]
+        t = prettytable.PrettyTable(["Role", "Task", "Elapsed"])
+        t.align["Role"] = "l"
+        t.align["Task"] = "l"
+        t.align["Elapsed"] = "r"
         # Print the timings
         for name, elapsed in results:
-            print(
-                "{0:-<70}{1:->9}".format(
-                    '{0} '.format(name),
-                    ' {0:.02f}s'.format(elapsed),
-                )
-            )
+            s = name.split("|", 1)
+            if len(s) == 1:
+                role = ""
+                task = s[0]
+            else:
+                role = s[0]
+                task = s[1].strip()
+            t.add_row((role, task, '{0:.02f}s'.format(elapsed)))
+        print(t)

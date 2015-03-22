@@ -3,5 +3,6 @@ ansible
 influxdb
 keyring
 nose
+prettytable
 redis
 requests
