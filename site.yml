@@ -1,6 +1,6 @@
 ---
 - name: Install jenkins, nginx and squid3.
-  hosts: all
+  hosts: vagrant
   pre_tasks:
     - name: Update apt cache
       apt:
