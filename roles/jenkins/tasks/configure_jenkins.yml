@@ -1,0 +1,19 @@
+---
+- name: Create additional directories for builds and workspaces.
+  file:
+    path: "{{jenkins_spool_dir}}/{{item}}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+  with_items:
+    - builds
+    - workspaces
+
+- name: Configure Jenkins
+  template:
+    src: var/lib/jenkins/{{item}}
+    dest: /var/lib/jenkins/{{item}}
+  notify: restart jenkins
+  with_items:
+    - config.xml
+    - org.jenkinsCi.plugins.projectDescriptionSetter.DescriptionSetterWrapper.xml

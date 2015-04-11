@@ -5,3 +5,4 @@
 - include: start_jenkins.yml
 - include: install_plugins.yml
 - include: install_maven.yml
+- include: configure_jenkins.yml

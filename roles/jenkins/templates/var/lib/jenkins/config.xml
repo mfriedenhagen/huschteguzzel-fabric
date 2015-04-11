@@ -11,6 +11,9 @@
   <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
   <workspaceDir>{{jenkins_spool_dir}}/workspaces/${ITEM_FULL_NAME}</workspaceDir>
   <buildsDir>{{jenkins_spool_dir}}/builds/${ITEM_FULL_NAME}</buildsDir>
+  <markupFormatter class="hudson.markup.RawHtmlMarkupFormatter" plugin="antisamy-markup-formatter@1.3">
+    <disableSyntaxHighlighting>false</disableSyntaxHighlighting>
+  </markupFormatter>
   <jdks>
     <jdk>
       <name>JDK 8</name>
