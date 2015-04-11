@@ -5,27 +5,57 @@ jenkins_https_port: 8443
 jenkins_context: ci
 jenkins_base_url: http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/{{ jenkins_context }}
 jenkins_plugins:
-  - analysis-collector
+  - ant
+  - antisamy-markup-formatter
   - build-environment
+  - build-failure-analyzer
   - build-monitor-plugin
+  - build-name-setter
+  - build-timeout
+  - build-user-vars-plugin
   - buildtriggerbadge
-  - checkstyle
-  - compact-columns
-  - doclinks
+  - configurationslicing
+  - credentials
+  - cvs
+  - dashboard-view
   - email-ext
   - embeddable-build-status
-  - findbugs
+  - external-monitor-job
+  - git-client
+  - git-parameter
+  - git-server
+  - git-tag-message
+  - git-userContent
   - git
-  - github-oauth
-  - gitlab-plugin
   - html5-notifier-plugin
+  - htmlpublisher
   - jacoco
-  - job-poll-action-plugin
-  - jobConfigHistory
-  - metrics-graphite
-  - pmd
-  - simple-theme-plugin
+  - javadoc
+  - job-dsl
+  - junit
+  - ldap
+  - m2release
+  - mailer
+  - mapdb-api
+  - mask-passwords
+  - matrix-auth
+  - matrix-project
+  - maven-info
+  - maven-metadata-plugin
+  - maven-plugin
+  - pam-auth
+  - pollscm
+  - project-description-setter
+  - release
+  - scm-api
+  - script-security
+  - ssh-credentials
+  - ssh-slaves
+  - subversion
   - template-project
+  - token-macro
+  - translation
+  - windows-slaves
 maven_download_base_url: http://repo1.maven.org/maven2/org/apache/maven/apache-maven
 maven_versions:
   - 2.2.1
