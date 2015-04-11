@@ -2,7 +2,7 @@
 
 server {
 	listen   80 default;
-	server_name  {{ansible_fqdn}};
+	#server_name  {{ansible_fqdn}};
 
 	access_log  /var/log/nginx/{{ansible_fqdn}}.access.log;
 
@@ -81,7 +81,7 @@ server {
 #
 server {
 	listen   443;
-	server_name  {{ansible_fqdn}};
+	#server_name  {{ansible_fqdn}};
 
 	client_max_body_size	20M;
 
