@@ -21,3 +21,10 @@
   with_items:
     - mvn
     - mvnDebug
+
+- name: Create Maven configuration for Jenkins.
+  template:
+    src: var/lib/jenkins/hudson.tasks.Maven.xml
+    dest: /var/lib/jenkins/hudson.tasks.Maven.xml
+  notify: restart jenkins
+    

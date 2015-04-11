@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.tasks.Maven_-DescriptorImpl>
+  <installations>
+    <hudson.tasks.Maven_-MavenInstallation>
+      <name>Maven</name>
+      <home>/usr/local/maven/apache-maven-{{ maven_current_version }}/</home>
+      <properties/>
+    </hudson.tasks.Maven_-MavenInstallation>
+{% for maven_version in maven_versions|reverse %}
+    <hudson.tasks.Maven_-MavenInstallation>
+      <name>Maven {{maven_version}}</name>
+      <home>/usr/local/maven/apache-maven-{{ maven_version }}/</home>
+      <properties/>
+    </hudson.tasks.Maven_-MavenInstallation>
+{% endfor %}
+  </installations>
+</hudson.tasks.Maven_-DescriptorImpl>
