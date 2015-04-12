@@ -19,4 +19,6 @@
   with_items:
     - config.xml
     - org.jenkinsCi.plugins.projectDescriptionSetter.DescriptionSetterWrapper.xml
+    - jenkins.model.JenkinsLocationConfiguration.xml
+    - hudson.plugins.emailext.ExtendedEmailPublisher.xml
     - jobs/z_job_dsl_creator/config.xml
