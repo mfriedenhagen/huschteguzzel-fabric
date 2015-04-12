@@ -4,7 +4,7 @@
   <charset>UTF-8</charset>
   <defaultContentType>text/html</defaultContentType>
   <defaultSubject>$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS! ${GIT_BRANCH}</defaultSubject>
-  <defaultBody>${JELLY_SCRIPT,template=&quot;html&quot;}</defaultBody>
+  <defaultBody>${JELLY_SCRIPT,template=&quot;html-with-health-and-console&quot;}</defaultBody>
   <defaultPresendScript></defaultPresendScript>
   <defaultClasspath/>
   <maxAttachmentSize>-1</maxAttachmentSize>
