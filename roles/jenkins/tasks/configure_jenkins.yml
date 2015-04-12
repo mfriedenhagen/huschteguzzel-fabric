@@ -13,7 +13,10 @@
   template:
     src: var/lib/jenkins/{{item}}
     dest: /var/lib/jenkins/{{item}}
+    owner: jenkins
+    group: jenkins
   notify: restart jenkins
   with_items:
     - config.xml
     - org.jenkinsCi.plugins.projectDescriptionSetter.DescriptionSetterWrapper.xml
+    - jobs/z_job_dsl_creator/config.xml
