@@ -44,6 +44,7 @@ class CallbackModule(object):
         # Just keep the top 10
         results = results[:30]
         t = prettytable.PrettyTable(["Role", "Task", "Elapsed"])
+        t.header_style = "upper"
         t.align["Role"] = "l"
         t.align["Task"] = "l"
         t.align["Elapsed"] = "r"
