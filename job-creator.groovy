@@ -46,8 +46,8 @@ projectNames.each {projectName ->
           scm('*/15 * * * *')
           cron('@daily')
       }
-      mavenInstallation('Maven 3')
-      goals('--errors --show-version -Dsonar.jacoco.itReportPath=target/jacoco-it.exec clean verify sonar:sonar')
+      mavenInstallation('Maven')
+      goals('--errors --show-version clean verify')
       archivingDisabled(true)
       runHeadless(true)
       wrappers {
@@ -97,8 +97,8 @@ projectNames.each {projectName ->
           scm('*/15 * * * *')
           cron('@daily')
       }
-      mavenInstallation('Maven 3')
-      goals('--errors --show-version -Dsonar.jacoco.itReportPath=target/jacoco-it -Dsonar.analysis.mode=preview -Dsonar.issuesReport.console.enable=true -Dsonar.issuesReport.html.enable=true clean verify sonar:sonar')
+      mavenInstallation('Maven')
+      goals('--errors --show-version clean verify')
       archivingDisabled(true)
       runHeadless(true)
       wrappers {
@@ -108,14 +108,6 @@ projectNames.each {projectName ->
       }
       publishers {
         jacocoCodeCoverage()
-        publishHtml {
-            report("target/sonar/issues-report/") {                    // since 1.28
-              reportName("Sonar Preview")
-              reportFiles("issues-report.html")           // defaults to 'index.html' if omitted
-              allowMissing(true) // defaults to false if omitted
-              keepAll(true)           // defaults to false if omitted
-            }
-        }
         extendedEmail('mfriedenhagen@gmail.com', '$DEFAULT_SUBJECT', '$DEFAULT_CONTENT')
       }
       configure {node ->
