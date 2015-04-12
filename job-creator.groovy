@@ -53,11 +53,12 @@ projectNames.each {projectName ->
       wrappers {
         mavenRelease {
           releaseGoals('-Dresume=false -DpreparationGoals=validate -DpushChanges=false -DlocalCheckout=true -Darguments="-Dgpg.skip=true -DaltDeploymentRepository=foo::default::file:///tmp/repo/" release:prepare release:perform')
-      selectAppendJenkinsUsername()
+          selectAppendJenkinsUsername()
         }
         timeout {
           absolute(30)
         }
+        buildName('#${BUILD_NUMBER}  ${GIT_BRANCH}')
       }
       publishers {
         jacocoCodeCoverage()
@@ -105,6 +106,7 @@ projectNames.each {projectName ->
         timeout {
           absolute(30)
         }
+        buildName('#${BUILD_NUMBER}  ${GIT_BRANCH}')
       }
       publishers {
         jacocoCodeCoverage()
