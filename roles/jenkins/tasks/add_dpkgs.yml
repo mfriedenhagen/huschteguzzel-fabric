@@ -1,6 +1,16 @@
 ---
+- name: Unhold Jenkins version.
+  command: apt-mark unhold jenkins
+  ignore_errors: yes
+  changed_when: false
+
 - name: Ensure needed packages are installed.
   apt:
     name: "jenkins={{jenkins_version}}"
     state: present
   register: jenkins
+
+- name: Hold Jenkins version.
+  command: apt-mark hold jenkins
+  ignore_errors: yes
+  changed_when: false
