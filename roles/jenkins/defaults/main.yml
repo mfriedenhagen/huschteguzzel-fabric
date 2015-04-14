@@ -25,12 +25,14 @@ jenkins_plugins:
   - email-ext
   - embeddable-build-status
   - external-monitor-job
+  - git
   - git-client
   - git-parameter
   - git-server
   - git-tag-message
   - git-userContent
-  - git
+  - github-api
+  - github-oauth
   - html5-notifier-plugin
   - htmlpublisher
   - jacoco
