@@ -1,4 +1,4 @@
-jenkins_version: 1.608
+jenkins_version: 1.609
 jenkins_jar_location: /var/lib/jenkins/war/WEB-INF/jenkins-cli.jar
 jenkins_hostname: 127.0.0.1
 jenkins_http_port: 8000
